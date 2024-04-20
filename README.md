@@ -36,7 +36,7 @@ hello world!
 このように、"hello world!"メッセージを取得できれば成功です。
 
 
-# WebTransport
+# webtransport-go
 
 8章「8.3. WebTransportによる通信」に記載の、WebTransport利用に関する解説です。
 本リポジトリにある「webtransport-go」(./webtransport-go)をダウンロードすると、以下のような構成になっています。
