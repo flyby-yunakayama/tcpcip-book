@@ -1,0 +1,144 @@
+<html>
+<style>
+  h2 {
+    border-bottom: 1px dotted #333;
+    font-size: 120%;
+    font-weight: normal;
+    padding-bottom: 0.2em;
+    padding-top: 0.5em;
+  }
+
+  #event-log {
+    border: 1px dotted black;
+    font-family: monospace;
+    height: 40em;
+    overflow: scroll;
+    padding-bottom: 1em;
+    padding-top: 1em;
+  }
+</style>
+<body>
+    <div>
+        <h2>Sent data over WebTransport</h2>
+    </div>
+    <button onclick="runUnidirectionalTest()">Run Unidirectional Test</button>
+    <button onclick="runBidirectionalTest()">Run Bidirectional Test</button>
+    <div>
+        <h2>Event log</h2>
+        <ul id="event-log"></ul>
+    </div>
+    <script>
+
+    function addToEventLog(text, severity = 'info') {
+        let log = document.getElementById('event-log');
+        let mostRecentEntry = log.lastElementChild;
+        let entry = document.createElement('li');
+        entry.innerText = text;
+        entry.className = 'log-' + severity;
+        log.appendChild(entry);
+
+        if (mostRecentEntry != null &&
+            mostRecentEntry.getBoundingClientRect().top 
+            < log.getBoundingClientRect().bottom) {
+            entry.scrollIntoView();
+        }
+    }
+
+    async function establishSession(url) {
+        addToEventLog("Connecting to " + url);
+        const transport = new WebTransport(url, {
+            "serverCertificateHashes": [{
+                "algorithm": "sha-256",
+                "value": new Uint8Array(%%CERTHASH%%)
+            }]
+        });
+
+        try {
+            await transport.ready;
+            addToEventLog('Connection ready.');
+        } catch (e) {
+            addToEventLog('Connection failed. ' + e, 'error');
+            return;
+        }
+
+        transport.closed.then(() => {
+            addToEventLog(`The HTTP/3 connection to ${url} closed gracefully.`);
+        }).catch((error) => {
+            console.error(`The HTTP/3 connection to ${url} closed due to ${error}.`);
+        });
+
+        return transport;
+    }
+
+    async function runUnidirectionalTest() {
+        addToEventLog("Unidirectinal Test");
+        const transport = await establishSession('https://127.0.0.1:12345/unidirectional');
+        const data = new Uint8Array(%%DATA%%);
+
+        let failed = false
+        for(let i = 0; i < 2; i++) {
+            await new Promise(resolve => setTimeout(resolve, 6000));
+            const stream = await transport.createUnidirectionalStream();
+            addToEventLog(`Opened stream ${i}.`)
+            const writer = stream.getWriter();
+            writer.write(data);
+            addToEventLog("Sent Data: " + data);
+            try {
+                await writer.close();
+                addToEventLog(`All data has been sent on stream ${i}.`);
+            } catch (error) {
+                console.error(`An error occurred: ${error}`);
+                failed = true
+            }
+        }
+        if(!failed) { addToEventLog("done"); }
+        transport.close()
+    }
+
+    async function runBidirectionalTest() {
+        addToEventLog("Bidirectinal Test");
+        const transport = await establishSession('https://127.0.0.1:12345/bidirectional');
+        const data = new Uint8Array(%%DATA%%);
+
+        let failed = false;
+        for(let i = 0; i < 2; i++) {
+            await new Promise(resolve => setTimeout(resolve, 6000));
+            
+            const stream = await transport.createBidirectionalStream();
+            addToEventLog(`Opened bidirectional stream ${i}.`);
+            
+            const writer = stream.writable.getWriter();
+            const reader = stream.readable.getReader();
+            
+            writer.write(data);
+            addToEventLog("Sent Data: " + data); 
+
+            try {
+                await writer.close();
+                addToEventLog(`All data has been sent on stream ${i}.`);
+            } catch (error) {
+                console.error(`An error occurred while sending: ${error}`);
+                failed = true;
+            }
+            
+            try {
+                const { value, done } = await reader.read();
+                if (!done) {
+                    addToEventLog(`Received data from server on stream ${i}.`);
+                    addToEventLog("Data: " + new TextDecoder().decode(value));
+                }
+                
+                reader.releaseLock();
+            } catch (error) {
+                console.error(`An error occurred while receiving: ${error}`);
+                failed = true;
+            }
+        }
+
+        if (!failed) { addToEventLog("done");}
+        transport.close();
+    }
+
+    </script>
+</body>
+</html>
