@@ -4,6 +4,20 @@ TCP/IP技術入門のサポートページです。
 ![書影](images/top.png)
 
 
+## 本書で登場するサンプルコードと動作確認環境について
+
+
+### 4章　
+
+➡[MATLAB︎ソースコード](link)●1●
+
+- OS　Windows 11 Pro 23H2
+- プロセッサ　2.9 GHz Intel Core i7
+- メモリ　16GB 4267 MHz LPDDR4
+- MATLAB　2022a（ツールボックスは不使用）
+
+
+### 8章
 
 # quic-go
 
