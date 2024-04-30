@@ -9,7 +9,7 @@ TCP/IP技術入門のサポートページです。
 
 ### 4章　
 
-➡[MATLAB︎ソースコード](./csma_ca/)●1●
+➡[MATLAB︎ソースコード](./csma_ca/)
 
 - OS　Windows 11 Pro 23H2
 - プロセッサ　2.9 GHz Intel Core i7
