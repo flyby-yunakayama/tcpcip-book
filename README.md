@@ -1,5 +1,5 @@
-# tcpcip-book
-TCP/IP技術入門のサポートページです。
+# TCP/IP技術入門 ——プロトコルスタックの基礎×実装［HTTP/3, QUIC, モバイル, Wi-Fi, IoT］
+『[TCP/IP技術入門](https://gihyo.jp/book/2024/978-4-297-14157-8)』のサポートページです。
 
 ![書影](images/top.png)
 
