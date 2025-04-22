@@ -1,5 +1,4 @@
-% clear; 
-
+clear; 
 OfferedLoad = [6 9 12 14 16 18 20 22 24 26 28 30]*1e6;
 
 fprintf('\n');
