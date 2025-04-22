@@ -11,11 +11,21 @@
 
 ➡[MATLAB︎ソースコード](./csma_ca/)
 
+#### 動作確認環境
 - OS　Windows 11 Pro 23H2
 - プロセッサ　2.9 GHz Intel Core i7
 - メモリ　16GB 4267 MHz LPDDR4
 - MATLAB　2022a（ツールボックスは不使用）
 
+本リポジトリにある「csma-ca」(./csma-ca)をダウンロードすると、以下のような構成になっています。
+```
+csma-ca
+├── main.m
+├── csma_ca_sim.m
+```
+
+「csma_ca_sim.m」がCSMA/CAシミュレーションの実行プログラムとなります。
+入力として、
 
 ### 6章
 
