@@ -2,7 +2,8 @@ clear;
 OfferedLoad = [6 9 12 14 16 18 20 22 24 26 28 30]*1e6;
 
 fprintf('\n');
-parfor ni = 1:numel(OfferedLoad)
+
+for ni = 1:numel(OfferedLoad)
 
   [Load, TP, Loss, Retry, NRx] = csma_ca_sim(OfferedLoad(ni), 10);
  
@@ -12,6 +13,7 @@ parfor ni = 1:numel(OfferedLoad)
 
   fprintf('/');
 end
+
 fprintf('\n');
 
 figure(1);
@@ -28,9 +30,9 @@ grid on;
 xlabel('Offered load [Mbps]');
 ylabel('Packet loss rate [%]');
 
-
 fprintf('\n');
-parfor ni = 1:numel(OfferedLoad)
+
+for ni = 1:numel(OfferedLoad)
 
   [Load, TP, Loss, Retry, NRx] = csma_ca_sim(OfferedLoad(ni), 70);
  
@@ -40,6 +42,7 @@ parfor ni = 1:numel(OfferedLoad)
 
   fprintf('/');
 end
+
 fprintf('\n');
 
 figure(1);
