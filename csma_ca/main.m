@@ -1,9 +1,10 @@
-clear; 
+
+% clear; 
+
 OfferedLoad = [6 9 12 14 16 18 20 22 24 26 28 30]*1e6;
 
 fprintf('\n');
-
-for ni = 1:numel(OfferedLoad)
+parfor ni = 1:numel(OfferedLoad)
 
   [Load, TP, Loss, Retry, NRx] = csma_ca_sim(OfferedLoad(ni), 10);
  
@@ -13,26 +14,25 @@ for ni = 1:numel(OfferedLoad)
 
   fprintf('/');
 end
-
 fprintf('\n');
 
 figure(1);
 hold on;
-plot(x/1e6, y/1e6, 'Color', mycolor('b'), 'Marker', 'o', 'LineWidth', 1.5);
+plot(x/1e6, y/1e6, 'Color', 'b', 'Marker', 'o', 'LineWidth', 1.5);
 grid on;
 xlabel('Offered load [Mbps]');
 ylabel('System throughput [Mbps]');
 
 figure(2);
 hold on;
-plot(x/1e6, z, 'Color', mycolor('b'), 'Marker', 'o', 'LineWidth', 1.5);
+plot(x/1e6, z, 'Color', 'b', 'Marker', 'o', 'LineWidth', 1.5);
 grid on;
 xlabel('Offered load [Mbps]');
 ylabel('Packet loss rate [%]');
 
-fprintf('\n');
 
-for ni = 1:numel(OfferedLoad)
+fprintf('\n');
+parfor ni = 1:numel(OfferedLoad)
 
   [Load, TP, Loss, Retry, NRx] = csma_ca_sim(OfferedLoad(ni), 70);
  
@@ -42,14 +42,13 @@ for ni = 1:numel(OfferedLoad)
 
   fprintf('/');
 end
-
 fprintf('\n');
 
 figure(1);
-plot(x/1e6, y/1e6, 'Color', mycolor('r'), 'Marker', 'd', 'LineWidth', 1.5);
+plot(x/1e6, y/1e6, 'Color', 'r', 'Marker', 'd', 'LineWidth', 1.5);
 
 figure(2);
-plot(x/1e6, z, 'Color', mycolor('r'), 'Marker', 'd', 'LineWidth', 1.5);
+plot(x/1e6, z, 'Color', 'r', 'Marker', 'd', 'LineWidth', 1.5);
 
 
 
